@@ -23,6 +23,7 @@ const Login = () => {
             Values,
             { withCredentials: true }
         );
+          toast.success(res.data.success);
           localStorage.setItem("userLoggedIn", "yes");
           navigate("/dashboard");
       } catch (error) {
