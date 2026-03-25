@@ -19,7 +19,7 @@ const Login = () => {
       e.preventDefault();
       try {
           const res = await axios.post(
-            "http://localhost:1000/api/v1/login",
+            `${import.meta.env.VITE_SERVER_URL}/api/v1/login`,
             Values,
             { withCredentials: true }
         );

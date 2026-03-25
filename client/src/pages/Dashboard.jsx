@@ -18,7 +18,7 @@ const Dashboard = () => {
     const fetchUserDetails = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:1000/api/v1/userDetails",
+          `${import.meta.env.VITE_SERVER_URL}/api/v1/userDetails`,
           { withCredentials: true }
         );
         setTasks(res.data.tasks);

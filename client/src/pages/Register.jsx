@@ -19,7 +19,7 @@ const Register = () => {
   const register = async (e) => {
       e.preventDefault();
       try {
-          const res = await axios.post("http://localhost:1000/api/v1/register", Values);
+          const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/register`, Values);
           toast.success(res.data.success);
           navigate("/login");
       } catch (error) {

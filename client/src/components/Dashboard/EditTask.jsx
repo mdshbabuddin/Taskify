@@ -20,7 +20,7 @@ const EditTask = ({ setEditTaskDiv, EditTaskId }) => {
 
     const fetch = async () => {
       try {
-        const res = await axios.get(`http://localhost:1000/api/v1/getTask/${EditTaskId}`, {
+        const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/getTask/${EditTaskId}`, {
           withCredentials: true,
         });
         setValues(res.data.taskDetails);
@@ -33,7 +33,7 @@ const EditTask = ({ setEditTaskDiv, EditTaskId }) => {
     e.preventDefault();
     try {
       const res = await axios.put(
-        `http://localhost:1000/api/v1/editTask/${id}`,
+        `${import.meta.env.VITE_SERVER_URL}/api/v1/editTask/${id}`,
         Values,
         { withCredentials: true }
       );
@@ -52,7 +52,7 @@ const EditTask = ({ setEditTaskDiv, EditTaskId }) => {
     e.preventDefault();
     try {
       const res = await axios.delete(
-        `http://localhost:1000/api/v1/deleteTask/${id}`,
+        `${import.meta.env.VITE_SERVER_URL}/api/v1/deleteTask/${id}`,
         { withCredentials: true }
       );
       toast.success(res.data.message || "Task Deleted successfully");
