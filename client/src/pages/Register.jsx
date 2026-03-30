@@ -5,80 +5,91 @@ import toast from 'react-hot-toast';
 
 const Register = () => {
   const navigate = useNavigate();
-  const [Values, setValues] = useState({
-      username: "",
-      email: "",
-      password: "",
-  });
+  const [Values, setValues] = useState({ username: "", email: "", password: "" });
 
   const change = (e) => {
-      const { name, value } = e.target;
-      setValues({ ...Values, [name]: value });
+    const { name, value } = e.target;
+    setValues({ ...Values, [name]: value });
   };
 
   const register = async (e) => {
-      e.preventDefault();
-      try {
-          const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/register`, Values);
-          toast.success(res.data.success);
-          navigate("/login");
-      } catch (error) {
-          toast.error(error?.response?.data?.error || "Something went wrong");
-      }
+    e.preventDefault();
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/register`, Values);
+      toast.success(res.data.success);
+      navigate("/login");
+    } catch (error) {
+      toast.error(error?.response?.data?.error || "Something went wrong");
+    }
   };
 
   return (
-    <div className='flex h-screen flex-col items-center justify-center px-4 sm:px-6'>
+    <div className="min-h-screen bg-zinc-950 flex items-center justify-center px-4">
+      <div className="w-full max-w-sm bg-zinc-900 border border-zinc-800 rounded-2xl px-8 py-10">
+
         {/* Title */}
-        <div className='w-full max-w-md text-center'>
-            <h1 className='text-3xl sm:text-4xl font-bold mb-1 text-blue-800'>Taskify</h1>
-            <h3 className='text-sm sm:text-base font-semibold text-zinc-900'>
-                Register with Taskify
-            </h3>
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-indigo-400 mb-1">Taskify</h1>
+          <p className="text-sm text-zinc-500">Create your account</p>
         </div>
 
         {/* Form */}
-        <div className='w-full max-w-md mt-4'>
-            <form className='flex flex-col gap-4'>
-                <input 
-                  type="text" 
-                  required 
-                  placeholder='Username' 
-                  className='border rounded px-3 sm:px-4 py-2 border-zinc-400 w-full outline-none text-sm sm:text-base' 
-                  name='username'
-                  value={Values.username}
-                  onChange={change}
-                />
-                <input 
-                  type="email" 
-                  required 
-                  placeholder='Email' 
-                  className='border rounded px-3 sm:px-4 py-2 border-zinc-400 w-full outline-none text-sm sm:text-base' 
-                  name='email'
-                  value={Values.email}
-                  onChange={change}
-                />
-                <input 
-                  type="password" 
-                  required 
-                  placeholder='Password' 
-                  className='border rounded px-3 sm:px-4 py-2 border-zinc-400 w-full outline-none text-sm sm:text-base' 
-                  name='password'
-                  value={Values.password}
-                  onChange={change}
-                />
-                <button 
-                  type="submit"
-                  className='bg-blue-800 text-white font-semibold py-2 rounded hover:bg-blue-700 transition-all duration-300 text-sm sm:text-base'
-                  onClick={register}
-                >
-                    Register
-                </button>
-                <p className='text-center font-semibold text-gray-900 text-xs sm:text-sm'>
-                    Already have an account? <Link to="/login" className='text-blue-700 hover:underline'>Login</Link>
-                </p>
-            </form>
-        </div>   
+        <form className="flex flex-col gap-5">
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Username</label>
+            <input
+              type="text"
+              required
+              name="username"
+              placeholder="abcd"
+              value={Values.username}
+              onChange={change}
+              className="bg-zinc-800 border border-zinc-700 text-zinc-100 text-sm rounded-lg px-4 py-2.5 outline-none focus:border-indigo-500 placeholder-zinc-600 transition-colors"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Email</label>
+            <input
+              type="email"
+              required
+              name="email"
+              placeholder="abc@gmail.com"
+              value={Values.email}
+              onChange={change}
+              className="bg-zinc-800 border border-zinc-700 text-zinc-100 text-sm rounded-lg px-4 py-2.5 outline-none focus:border-indigo-500 placeholder-zinc-600 transition-colors"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Password</label>
+            <input
+              type="password"
+              required
+              name="password"
+              placeholder="••••••••"
+              value={Values.password}
+              onChange={change}
+              className="bg-zinc-800 border border-zinc-700 text-zinc-100 text-sm rounded-lg px-4 py-2.5 outline-none focus:border-indigo-500 placeholder-zinc-600 transition-colors"
+            />
+          </div>
+
+          <button
+            type="submit"
+            onClick={register}
+            className="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm py-2.5 rounded-lg transition-colors mt-1"
+          >
+            Register
+          </button>
+
+          <p className="text-center text-zinc-500 text-sm">
+            Already have an account?{" "}
+            <Link to="/login" className="text-indigo-400 font-semibold hover:underline">Login</Link>
+          </p>
+
+        </form>
+      </div>
     </div>
   );
 };

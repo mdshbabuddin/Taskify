@@ -17,16 +17,16 @@ const EditTask = ({ setEditTaskDiv, EditTaskId }) => {
 
   useEffect(() => {
     if (!EditTaskId) return;
-
-    const fetch = async () => {
+    const fetchTask = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/v1/getTask/${EditTaskId}`, {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          `${import.meta.env.VITE_SERVER_URL}/api/v1/getTask/${EditTaskId}`,
+          { withCredentials: true }
+        );
         setValues(res.data.taskDetails);
       } catch (error) {}
     };
-    fetch();
+    fetchTask();
   }, [EditTaskId]);
 
   const editTask = async (e, id) => {
@@ -55,55 +55,64 @@ const EditTask = ({ setEditTaskDiv, EditTaskId }) => {
         `${import.meta.env.VITE_SERVER_URL}/api/v1/deleteTask/${id}`,
         { withCredentials: true }
       );
-      toast.success(res.data.message || "Task Deleted successfully");
+      toast.success(res.data.message || "Task deleted successfully");
       setTimeout(() => {
         window.sessionStorage.clear("editTaskId");
         setEditTaskDiv("hidden");
         window.location.reload();
-      }, 700);      
+      }, 700);
     } catch (error) {
       toast.error(error?.response?.data?.error || "Something went wrong");
     }
   };
 
+  const inputClass = "bg-zinc-800 border border-zinc-700 text-zinc-100 text-sm rounded-lg px-3 py-2 outline-none focus:border-indigo-500 placeholder-zinc-600 transition-colors w-full";
+  const labelClass = "text-xs font-semibold text-zinc-500 uppercase tracking-wider";
+
   return (
-    <div className='bg-white rounded px-4 py-4 w-full sm:w-3/4 md:w-2/3 lg:w-1/3'>
-      <h1 className='text-center font-semibold text-xl'>Edit Task</h1>
-      <hr className='mb-4 mt-2' />
+    <div className="bg-zinc-900 border border-zinc-800 rounded-2xl px-6 py-6 w-full sm:w-3/4 md:w-2/3 lg:w-1/3">
 
-      <form className='flex flex-col gap-4'>
-        <input
-          type="text"
-          className='border px-2 py-1 rounded border-zinc-300 outline-none w-full'
-          placeholder='Title'
-          name='title'
-          value={Values.title}
-          onChange={change}
-        />
+      {/* Header */}
+      <div className="flex items-center justify-between mb-5">
+        <h1 className="text-lg font-bold text-zinc-100">Edit Task</h1>
+        <button
+          onClick={() => {
+            window.sessionStorage.clear("editTaskId");
+            setEditTaskDiv("hidden");
+          }}
+          className="text-zinc-500 hover:text-zinc-300 text-xl transition-colors"
+        >
+          ✕
+        </button>
+      </div>
 
-        <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4'>
-          <div className='w-full sm:w-1/2'>
-            <h3 className='mb-2 text-sm sm:text-base'>Select Priority</h3>
-            <select
-              name="priority"
-              className='border px-2 py-1 rounded border-zinc-300 outline-none w-full'
-              value={Values.priority}
-              onChange={change}
-            >
+      <form className="flex flex-col gap-4">
+
+        <div className="flex flex-col gap-1.5">
+          <label className={labelClass}>Title</label>
+          <input
+            type="text"
+            name="title"
+            placeholder="Task title"
+            value={Values.title}
+            onChange={change}
+            className={inputClass}
+          />
+        </div>
+
+        <div className="flex gap-4">
+          <div className="flex flex-col gap-1.5 w-full">
+            <label className={labelClass}>Priority</label>
+            <select name="priority" value={Values.priority} onChange={change} className={inputClass}>
               <option value="low">Low</option>
               <option value="medium">Medium</option>
               <option value="high">High</option>
             </select>
           </div>
 
-          <div className='w-full sm:w-1/2'>
-            <h3 className='mb-2 text-sm sm:text-base'>Select Status</h3>
-            <select
-              name="status"
-              className='border px-2 py-1 rounded border-zinc-300 outline-none w-full'
-              value={Values.status}
-              onChange={change}
-            >
+          <div className="flex flex-col gap-1.5 w-full">
+            <label className={labelClass}>Status</label>
+            <select name="status" value={Values.status} onChange={change} className={inputClass}>
               <option value="yetToStart">Yet To Start</option>
               <option value="inProgress">In Progress</option>
               <option value="completed">Completed</option>
@@ -111,46 +120,48 @@ const EditTask = ({ setEditTaskDiv, EditTaskId }) => {
           </div>
         </div>
 
-        <textarea
-          name="description"
-          placeholder='Description'
-          className='border px-2 py-1 rounded border-zinc-300 outline-none h-[25vh] w-full'
-          value={Values.description}
-          onChange={change}
-        />
+        <div className="flex flex-col gap-1.5">
+          <label className={labelClass}>Description</label>
+          <textarea
+            name="description"
+            placeholder="Task description..."
+            value={Values.description}
+            onChange={change}
+            className={`${inputClass} h-28 resize-none`}
+          />
+        </div>
 
-        <div className='flex flex-col sm:flex-row items-center justify-between gap-4'>
+        <div className="flex gap-3 mt-1">
           <button
             type="button"
-            className='w-full sm:w-1/3 bg-blue-800 py-2 hover:bg-blue-700 transition-all duration-300 text-white rounded'
             onClick={(e) => editTask(e, Values._id)}
+            className="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold py-2.5 rounded-lg transition-colors"
           >
-            Edit Task
+            Save
           </button>
-
           <button
             type="button"
-            className='w-full sm:w-1/3 border border-red-600 text-red-600 py-2 hover:bg-red-100 transition-all duration-300 rounded'
             onClick={(e) => deleteTask(e, Values._id)}
+            className="flex-1 border border-red-500/40 text-red-400 hover:bg-red-500/10 text-sm font-semibold py-2.5 rounded-lg transition-colors"
           >
-            Delete Task
+            Delete
           </button>
-
           <button
             type="button"
-            className='w-full sm:w-1/3 border border-black py-2 hover:bg-zinc-100 transition-all duration-300 rounded'
-            onClick={(event) => {
-              event.preventDefault();
+            onClick={(e) => {
+              e.preventDefault();
               window.sessionStorage.clear("editTaskId");
               setEditTaskDiv("hidden");
             }}
+            className="flex-1 border border-zinc-700 text-zinc-400 hover:bg-zinc-800 text-sm font-semibold py-2.5 rounded-lg transition-colors"
           >
             Cancel
           </button>
         </div>
+
       </form>
     </div>
-  )
+  );
 };
 
 export default EditTask;

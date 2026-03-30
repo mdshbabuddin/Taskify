@@ -33,55 +33,54 @@ const Dashboard = () => {
   }, [AddTaskDiv]);
 
   return (
-    <div className="w-full relative">
-      {/* Header */}
-      <div className="bg-white">
-        <Header setAddTaskDiv={setAddTaskDiv} />
-      </div>
+    <div className="min-h-screen bg-zinc-950">
 
-      {/* Task Columns */}
-      <div className="px-4 sm:px-6 md:px-12 py-4 bg-zinc-100 min-h-[89vh] flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-12">
+      {/* Header */}
+      <Header setAddTaskDiv={setAddTaskDiv} />
+
+      {/* Kanban Columns */}
+      <div className="flex flex-col md:flex-row gap-5 px-6 py-6">
+
         {/* Yet To Start */}
-        <div className="w-full md:w-1/3">
+        <div className="w-full md:w-1/3 bg-zinc-900 border border-zinc-800 rounded-2xl p-4">
           <StackTitle title={"Yet To Start"} />
-          <div className="pt-2">
+          <div className="flex flex-col gap-2">
             {Tasks && <YetToStart task={Tasks[0].yetToStart} />}
           </div>
         </div>
 
         {/* In Progress */}
-        <div className="w-full md:w-1/3">
+        <div className="w-full md:w-1/3 bg-zinc-900 border border-zinc-800 rounded-2xl p-4">
           <StackTitle title={"In Progress"} />
-          <div className="pt-2">
+          <div className="flex flex-col gap-2">
             {Tasks && <InProgress task={Tasks[1].inProgress} />}
           </div>
         </div>
 
         {/* Completed */}
-        <div className="w-full md:w-1/3">
+        <div className="w-full md:w-1/3 bg-zinc-900 border border-zinc-800 rounded-2xl p-4">
           <StackTitle title={"Completed"} />
-          <div className="pt-2">
+          <div className="flex flex-col gap-2">
             {Tasks && <Completed task={Tasks[2].completed} />}
           </div>
         </div>
+
       </div>
 
-      {/* Add Task Modal Overlay */}
-      <div className={`w-full ${AddTaskDiv} h-screen fixed top-0 left-0 bg-zinc-800 opacity-85`} />
-      <div className={`w-full ${AddTaskDiv} h-screen fixed top-0 left-0 flex items-center justify-center p-4`}>
+      {/* Add Task Modal */}
+      <div className={`${AddTaskDiv} fixed inset-0 bg-black/60 z-40`} />
+      <div className={`${AddTaskDiv} fixed inset-0 flex items-center justify-center z-50 px-4`}>
         <AddTask setAddTaskDiv={setAddTaskDiv} />
       </div>
 
-      {/* Edit Task Modal Overlay */}
-      <div className={`w-full ${EditTaskDiv} h-screen fixed top-0 left-0 bg-zinc-800 opacity-85`} />
-      <div className={`w-full ${EditTaskDiv} h-screen fixed top-0 left-0 flex items-center justify-center p-4`}>
+      {/* Edit Task Modal */}
+      <div className={`${EditTaskDiv} fixed inset-0 bg-black/60 z-40`} />
+      <div className={`${EditTaskDiv} fixed inset-0 flex items-center justify-center z-50 px-4`}>
         {EditTaskId && (
-          <EditTask 
-            EditTaskId={EditTaskId}
-            setEditTaskDiv={setEditTaskDiv}
-          />
+          <EditTask EditTaskId={EditTaskId} setEditTaskDiv={setEditTaskDiv} />
         )}
       </div>
+
     </div>
   );
 };
